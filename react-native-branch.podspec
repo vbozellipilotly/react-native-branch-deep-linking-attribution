@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
                    }
   s.license      = spec['license']
   s.homepage     = spec['homepage']
-  s.platform     = :ios, "11.0"
+  s.platforms    = {:ios => "11.0", :tvos => "12.4"}
   s.source       = { spec['repository']['type'].to_sym => spec['repository']['url'].sub(/^[a-z]+\+/, '') }
   s.source_files = [ "ios/*.h", "ios/*.m"]
   s.compiler_flags = %[-DRNBRANCH_VERSION=@\\"#{s.version}\\"]
