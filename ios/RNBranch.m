@@ -518,9 +518,12 @@ RCT_EXPORT_METHOD(
     event.contentItems = buos;
     if ([eventName isEqualToString:BranchStandardEventViewItem] && params.count == 0) {
         for (BranchUniversalObject *buo in buos) {
+
             if (!buo.locallyIndex) continue;
+#if !TARGET_OS_TV
             // for now at least, pending possible changes to the native SDK
             [buo listOnSpotlight];
+#endif
         }
     }
 
@@ -547,7 +550,7 @@ RCT_EXPORT_METHOD(
         }
 
         BranchLinkProperties *linkProperties = [self createLinkProperties:linkPropertiesMap withControlParams:mutableControlParams];
-
+#if !TARGET_OS_TV
         [branchUniversalObject showShareSheetWithLinkProperties:linkProperties
                                                    andShareText:shareOptionsMap[@"messageBody"]
                                              fromViewController:self.currentViewController
@@ -570,6 +573,7 @@ RCT_EXPORT_METHOD(
                                                     resolve(result);
                                                 }
                                             }];
+#endif
     });
 }
 
@@ -627,6 +631,7 @@ RCT_EXPORT_METHOD(
     BranchUniversalObject *branchUniversalObject = [self findUniversalObjectWithIdent:identifier rejecter:reject];
     if (!branchUniversalObject) return;
 
+#if !TARGET_OS_TV
     [branchUniversalObject listOnSpotlightWithCallback:^(NSString *string, NSError *error) {
         if (!error) {
             NSDictionary *data = @{@"result":string};
@@ -635,6 +640,7 @@ RCT_EXPORT_METHOD(
             reject([NSString stringWithFormat: @"%lu", (long)error.code], error.localizedDescription, error);
         }
     }];
+#endif
 }
 
 // @TODO can this be removed? legacy, short url should be created from BranchUniversalObject
